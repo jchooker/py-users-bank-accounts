@@ -1,8 +1,8 @@
 class User:
-    def __init__(self, name, email):
+    def __init__(self, name, email, startBal=0):
         self.name = name
         self.email = email
-        self.account = BankAccount(0.01, 1000)
+        self.account = BankAccount(0.01, startBal)
 
     def make_deposit(self, amount):
         self.account += amount
@@ -13,7 +13,8 @@ class User:
         return self
 
     def display_user_balance(self):
-        print(f"Account balance for {self.name}: {self.account}")
+        print(f"Account balance for {self.name}: $",end="")
+        print("%.2f"%self.account.balance)
         return self
 
     def transfer_money(self, other_user, amount):
@@ -51,10 +52,53 @@ class BankAccount:
         print(" interest added!")
         return self
 
-joseph = User("joseph", "jcole@ualr.giz")
+def runMenu():
+    acct_name = input("Please provide name for user account: ")
+    acct_email = input("Please provide email for account: ")
+    validEmail = emailVerified(acct_email)
+    while not validEmail:
+        acct_email = input("Invalid email! Please provide email for account: ")
+        validEmail = emailVerified(acct_email)
+    # acct_type = input("Which type of account? (C)hecking or (S)avings: ")
+    # validAcct = validAcctTypeSel(acct_type)
+    # print(validAcct)
+    # while not validAcct:
+    #     acct_type = input("Invalid account selection! Please choose (C)hecking or (S)avings: ")
+    #     validAcct = validAcctTypeSel(acct_type)
+    # acct_type = acctTypeSel(acct_type)
+    init_bal = validateBal(input("How much to deposit for initial balance? : $"))
 
-# def accountMenu():
-#     goodInput = False
-#     while not goodInput:
-#         input("Please provide name for user account:")
+    return User(acct_name, acct_email, init_bal)
 
+def emailVerified(strTest): #incomplete email test
+    atTest = "@"
+    dotTest = "."
+    if atTest in strTest:
+        j = strTest.index(atTest)
+        if dotTest in strTest[j+len(atTest):]:
+            return True
+    return False
+
+# def validAcctTypeSel(strTest):
+#     return strTest == "c" strTest == or "C" or "s" or "S")
+
+# def acctTypeSel(strTest):
+#     if strTest == "c" or "C":
+#         return "Checking"
+#     elif strTest == "s" or "S":
+#         return "Savings"
+
+def validateBal(inputTest):
+    while True:
+        try:
+            val = int(inputTest)
+            return val
+        except ValueError:
+            try:
+                val = float(inputTest)
+                return val
+            except ValueError:
+                print("Invalid input! Please provide valid amount!: ")
+
+user1 = runMenu()
+user1.display_user_balance()
