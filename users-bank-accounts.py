@@ -100,5 +100,23 @@ def validateBal(inputTest):
             except ValueError:
                 print("Invalid input! Please provide valid amount!: ")
 
-user1 = runMenu()
-user1.display_user_balance()
+def addUserOption():
+    userInput = input("Would you like to add an account? (Y)es or (N)o: ")
+    validInput = False
+    if (userInput == "Y") or (userInput == "y") or (userInput == "N") or (userInput == "n"):
+        validInput = True
+    while not validInput:
+        userInput = input("Invalid entry! Would you like to add another account? (Y)es or (N)o: ")
+        if (userInput == "Y") or (userInput == "y") or (userInput == "N") or (userInput == "n"):
+            validInput = True
+    if (userInput == "Y") or (userInput == "y"):
+        return True
+    else:
+        return False
+
+user_list = []
+while addUserOption():
+    user_list.append(runMenu())
+for i in user_list:
+    i.display_user_balance()
+
